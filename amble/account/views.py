@@ -8,7 +8,7 @@ from .forms import RegisterForm
 def home(request):
     return render(request, 'home.html')
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -26,7 +26,7 @@ def login(request):
         return render(request, 'login.html', {'form': form, 'error': 'Invalid Login'})
 
 
-def signup(request):
+def signup_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
