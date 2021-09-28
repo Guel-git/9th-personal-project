@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'trail.apps.TrailConfig',
     'account.apps.AccountConfig',
+    'community.apps.CommunityConfig',
 ]
 
 MIDDLEWARE = [

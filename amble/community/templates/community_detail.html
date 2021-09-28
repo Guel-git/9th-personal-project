@@ -1,0 +1,30 @@
+<h3>{{ community.title }}</h3>
+<h5>{{ community.author }}</h5>
+<h5>{{ community.pub_date }}</h5>
+<p>{{ community.content }}</p>
+
+
+{% if user.is_authenticated and user == community.author %}
+<a href="{% url 'edit' community.id %}">수정하기</a>
+<a href="{% url 'delete' community.id %}">삭제하기</a>
+{% endif %}
+
+{% if user.is_authenticated %}
+<form action="{% url 'reply' community.id %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" value="{{ post.id }}" name="community">
+    <input type="text" name="content">
+    <button class="button" type="submit">댓글 남기기</button>
+</form>
+{% endif %}
+
+{% for reply in community.community_replys.all %}
+{% if user.is_authenticated and user == reply.reply_by %}
+<a href="{% url 'reply_delete' community.id reply.id %}">삭제</a>
+{% endif %}
+<h6>{{ reply.reply_by }}</h6>
+<h6>{{ reply.reply_at }}</h6>
+<p>{{ reply.content }}</p>
+{% empty %}
+<p>아직 작성된 댓글이 없습니다.</p>
+{% endfor %}
