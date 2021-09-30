@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path
 import account.views as account
 import community.views as community
+import blog.views as blog
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,4 +35,14 @@ urlpatterns = [
     path('community/delete/<int:community_id>', community.delete, name="delete"),
     path('community/reply/<int:community_id>', community.reply, name="reply"),
     path('community/reply/delete/<int:community_id>/<int:reply_id>', community.reply_delete, name="reply_delete"),
-]
+    path('blog', blog.blog, name="blog"),
+    path('blog/detail/<int:blog_id>', blog.detail, name="blog_detail"),
+    path('blog/new', blog.new, name="blog_new"),
+    path('blog/create', blog.create, name="blog_create"),
+    path('blog/edit/<int:blog_id>', blog.edit, name="blog_edit"),
+    path('blog/update/<int:blog_id>', blog.update, name="blog_update"),
+    path('blog/delete/<int:blog_id>', blog.delete, name="blog_delete"),
+    path('blog/reply/<int:blog_id>', blog.reply, name="blog_reply"),
+    path('blog/reply/delete/<int:blog_id>/<int:reply_id>', blog.reply_delete, name="blog_reply_delete"),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'trail.apps.TrailConfig',
     'account.apps.AccountConfig',
     'community.apps.CommunityConfig',
+    'blog.apps.BlogConfig',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'account.CustomUser'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
