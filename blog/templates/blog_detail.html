@@ -1,0 +1,38 @@
+<h3>{{ blog.title }}</h3>
+<h5>{{ blog.author }}</h5>
+<h5>{{ blog.pub_date }}</h5>
+<p>{{ blog.content }}</p>
+{% if blog.img.url != None %}
+<img src="{{ blog.img.url}}">
+{% endif %}
+
+<p>
+{% for hashtag in hashtags.all %}
+#{{hashtag}}
+{% endfor %}
+</p>
+
+{% if user.is_authenticated and user == blog.author %}
+<a href="{% url 'blog_edit' blog.id %}">수정하기</a>
+<a href="{% url 'blog_delete' blog.id %}">삭제하기</a>
+{% endif %}
+
+{% if user.is_authenticated %}
+<form action="{% url 'blog_reply' blog.id %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" value="{{ post.id }}" name="blog">
+    <input type="text" name="content">
+    <button class="button" type="submit">댓글 남기기</button>
+</form>
+{% endif %}
+
+{% for reply in blog.blog_replys.all %}
+{% if user.is_authenticated and user == reply.reply_by %}
+<a href="{% url 'blog_reply_delete' blog.id reply.id %}">삭제</a>
+{% endif %}
+<h6>{{ reply.reply_by }}</h6>
+<h6>{{ reply.reply_at }}</h6>
+<p>{{ reply.content }}</p>
+{% empty %}
+<p>아직 작성된 댓글이 없습니다.</p>
+{% endfor %}
