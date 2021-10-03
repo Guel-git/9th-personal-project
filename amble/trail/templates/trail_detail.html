@@ -1,0 +1,13 @@
+<h3>{{ trail.name }}</h3>
+<h4>{{ trail.location }}</h4>
+<p>
+    {% for hashtag in hashtags.all %}
+    #{{hashtag}}
+    {% endfor %}
+</p>
+{% if trail.img.url != None %}
+<img src="{{ trail.img.url}}">
+{% endif %}
+<a href="{{ trail.link }}">위치</a>
+<p>{{ trail.content }}</p>
+

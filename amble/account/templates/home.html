@@ -3,5 +3,15 @@
 <ul>
     <li><a href="{% url 'community' %}">커뮤니티 홈</a></li>
     <li><a href="{% url 'blog' %}">블로그 홈</a></li>
+    <li><a href="{% url 'trail' %}">산책로 홈</a></li>
+    <li>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}">로그인/회원가입</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">로그아웃</a>
+        {% endif %}
+    </li>
 </ul>
+
 

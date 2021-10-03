@@ -18,6 +18,7 @@ from django.urls import path
 import account.views as account
 import community.views as community
 import blog.views as blog
+import trail.views as trail
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login', account.login_view, name="login"),
     path('signup', account.signup_view, name="signup"),
+    path('logout', account.logout_view, name="logout"),
     path('', account.home, name="home"),
     path('community', community.community, name="community"),
     path('community/detail/<int:community_id>', community.detail, name="detail"),
@@ -44,5 +46,8 @@ urlpatterns = [
     path('blog/delete/<int:blog_id>', blog.delete, name="blog_delete"),
     path('blog/reply/<int:blog_id>', blog.reply, name="blog_reply"),
     path('blog/reply/delete/<int:blog_id>/<int:reply_id>', blog.reply_delete, name="blog_reply_delete"),
+    path('trail', trail.trail, name="trail"),
+    path('trail/detail/<int:trail_id>', trail.detail, name="trail_detail"),
+    path('trail/search', trail.search, name="search"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

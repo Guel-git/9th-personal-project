@@ -1,0 +1,18 @@
+<h1>산책로 홈</h1>
+<form action="{% url 'search' %}" method="post">
+    {% csrf_token %}
+    <input type="search" placeholder="걷고 싶은 산책로, 지역을 검색해보세요!" aria-label="Search" name="q" value="{{q}}">
+    <button type="submit">검색</button>
+</form>
+{% if not trails %}
+    <p>검색 결과가 없습니다.</p>
+{% else %}
+    {% for trail in trails.all %}
+        <h3>{{ trail.name }}</h3>
+        <h4>{{ trail.location }}</h4>
+        {% if trail.img.url != None %}
+            <img src="{{ trail.img.url }}">
+        {% endif %}
+        <a href="{% url 'trail_detail' trail.id %}">...더보기</a>
+    {% endfor %}
+{% endif %}
