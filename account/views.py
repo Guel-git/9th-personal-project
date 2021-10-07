@@ -25,6 +25,9 @@ def login_view(request):
         form = AuthenticationForm()
         return render(request, 'login.html', {'form': form, 'error': 'Invalid Login'})
 
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 def signup_view(request):
     if request.method == 'POST':

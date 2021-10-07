@@ -1,8 +1,136 @@
-<h1>수정하기</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>amble</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+        <style>
+            * { 
+                font-family: 'Noto Sans', sans-serif;
+                color: black;               
+                font-size: 17px;
+                font-weight: 600;
+                line-height: 25.88px;
+            }
+            .head-wrapper {
+                display: flex;
+                justify-content: space-between;
+                padding-left: 36px;
+                padding-right: 50px;
+            }
+            .login-wrapper {
+                padding-top: 40px;
+            }
+            .body-wrapper {
+                display: grid;
+                grid-template-columns: 2fr 7fr;
+                font-weight: 800;
+                padding-top: 8px;
+            }
+            .body-navbar {
+                padding-left: 60px;
+                padding-top: 8px;
+            }
+            .navbar-item {
+                padding-bottom: 50px;
+            }
+            a {
+                text-decoration: none;
+            }
+            #nav-location {
+                color: #249C87;
+            }
+            .comm-wrapper {
+                display: flex;
+                flex-direction: column;
+                background-color: #F3F3F3;
+                height: 350px;
+                width: 1023px;
+                margin-top: 16px;
+                border-radius: 15px;
+                padding-top: 52px;
+                padding-left: 42px;
+                
+            }
+            .comm-title {
+                padding-bottom: 25px;
+            }
+            .comm-content {
+                padding-bottom: 25px;
+            }
+            .comm-edit-button {
+                height: 30px;
+                width: 110px;
+                border-radius: 8px;
+                background-color: #2EC7AB;
+                color: white;
+                font-size: 15px;
+                border: 1px #DAD8D8;
+            }
+            .footer {
+                padding-top: 60px;
+            }
+            .footer-img {
+                padding-left: 45px;
+                font-weight: 400;
+            }
+            .footer-content {
+                padding-left: 60px;
+                font-weight: 400;
+                font-size: 12px;
+            }
+            .footer-rights {
+                padding-left: 60px;
+                padding-bottom: 30px;
+                font-weight: 300;
+                color: gray;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="head-wrapper">
+            <img src="{% static 'logo.png' %}">
+            <div class="login-wrapper">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}">로그인/회원가입</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">로그아웃</a>
+            {% endif %}
+            </div>
+        </div>
+        <div class="body-wrapper">
+            <div class="body-navbar">
+                <div class="navbar-item"><a href="{% url 'home' %}">홈</a></div>
+                <div class="navbar-item"><a href="{% url 'trail' %}">산책로</a></div>
+                <div class="navbar-item"><a href="{% url 'community' %}" id="nav-location">커뮤니티</a></div>
+                <div class="navbar-item"><a href="{% url 'blog' %}">블로그</a></div>
+            </div>
+            <div class="comm-wrapper">
+                <form action="{% url 'update' community.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="comm-title">제목<br><input type="text" size="105" name="title" value="{{ community.title }}"></div>
+                    <div class="comm-content">본문<br><textarea rows="5" cols="105" name="content">{{ community.content }}</textarea></p>
+                    <button class="comm-edit-button" type="submit">수정하기</button>
+                </form>
+            </div>
+        </div>
+        <footer class="footer">
+            <img class="footer-img" src="{% static 'logo.png' %}" width="100px"><br>
+            <div class="footer-content">Designed and built with all the love in the world <br>by the amble team with the help of our contributors.</div>
+            <div class="footer-content">
+                분위기 좋은 곳에서 산책 할래요?<br>
+                내 주변 산책로의 모든 것, amble<br>
+            </div>
+            <br>
+            <div class="footer-rights">ⓒ 2021. amble all rights reserved.</div>    
+        </footer>
+    </body>
+</html>
 
-<form action="{% url 'update' community.id %}" method="post">
-    {% csrf_token %}
-    <p>제목: <input type="text" name="title" value="{{ community.title }}"></p>
-    <p>본문: <textarea name="content">{{ community.content }}</textarea></p>
-    <button class="button" type="submit">수정하기</button>
-</form>
+
+

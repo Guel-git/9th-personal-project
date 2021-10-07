@@ -1,38 +1,244 @@
-<h3>{{ blog.title }}</h3>
-<h5>{{ blog.author }}</h5>
-<h5>{{ blog.pub_date }}</h5>
-<p>{{ blog.content }}</p>
-{% if blog.img.url != None %}
-<img src="{{ blog.img.url}}">
-{% endif %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>amble</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+        <style>
+            * { 
+                font-family: 'Noto Sans', sans-serif;
+                color: black;               
+                font-size: 17px;
+                font-weight: 600;
+                line-height: 25.88px;
+            }
+            .head-wrapper {
+                display: flex;
+                justify-content: space-between;
+                padding-left: 36px;
+                padding-right: 50px;
+            }
+            .login-wrapper {
+                padding-top: 40px;
+            }
+            .body-wrapper {
+                display: grid;
+                grid-template-columns: 2fr 7fr;
+                font-weight: 800;
+                padding-top: 8px;
+            }
+            .body-navbar {
+                padding-left: 60px;
+                padding-top: 8px;
+            }
+            .navbar-item {
+                padding-bottom: 50px;
+            }
+            a {
+                text-decoration: none;
+            }
+            #nav-location {
+                color: #249C87;
+            }
+            .body-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+                background-color: #F3F3F3;
+                height: auto;
+                padding-top: 40px;
+                padding-bottom: 40px;
+                width: 1064px;
+                margin-top: 16px;
+                border-radius: 15px;
+            }
+            .blog-item {
+                height: auto;
+                width: 950px;
+                background-color: white;
+                padding-left: 50px;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+            .blog-title {
+                font-family: Noto Sans;
+                font-size: 25px;
+                font-weight: 600;
+                line-height: 34px;
+                padding-top: 10px;
+                padding-bottom: 9px;
+                padding-bottom: 5px;
+            }
+            .blog-author {
+                font-size: 18px;
+                font-weight: 300;
+                color: gray;
+                padding-bottom: 25px;
+            }
+            .blog-img {
+                padding-bottom: 10px;
+            }
+            .blog-content {
+                font-family: Noto Sans;
+                font-size: 18px;
+                font-weight: 400;
+                line-height: 30px;
+                width:890px;
+                padding-bottom: 10px;
+            }
+            .blog-hashtag {
+                padding-bottom: 10px;
+            }
+            .blog-edit {
+                font-size: 15px;
+                font-weight: 300;
+                color: gray;
+            }
+            .blog-reply-wrapper {
+                padding-left: 400px;
+                padding-top: 30px;
+            }
+            .blog-reply-by {
+                font-size: 18px;
+                font-weight: 600;
+                color: #249C87;
+                padding-bottom: 10px;
+            }
+            .blog-reply-content {
+                width: 890px;  
+                font-size: 16px;
+                font-weight: 300;
+                padding-bottom: 23px;
+            }
+            .blog-reply-delete {
+                font-size: 13px;
+                font-weight: 300;
+                padding-bottom: 23px;
+                color: gray;
+            }
+            .blog-reply-create-wrapper {
+                display: flex;
+                padding-left: 400px;
+                padding-bottom: 27px;
+            }
+            .blog-create-input {
+                margin-right: 10px;
+                height: 28px;
+            }
+            .blog-create-button {
+                font-size: 15px;
+                background-color: #2EC7AB;
+                color: white;
+                height: 35px;
+                width: 110px;   
+                border-radius: 12px;
+                border: 1px solid #DAD8D8
+            }
+            .footer {
+                padding-top: 60px;
+            }
+            .footer-img {
+                padding-left: 45px;
+                font-weight: 400;
+            }
+            .footer-content {
+                padding-left: 60px;
+                font-weight: 400;
+                font-size: 12px;
+            }
+            .footer-rights {
+                padding-left: 60px;
+                padding-bottom: 30px;
+                font-weight: 300;
+                color: gray;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="head-wrapper">
+            <img src="{% static 'logo.png' %}">
+            <div class="login-wrapper">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}">로그인/회원가입</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">로그아웃</a>
+            {% endif %}
+            </div>
+        </div>
+        <div class="body-wrapper">
+            <div class="body-navbar">
+                <div class="navbar-item"><a href="{% url 'home' %}">홈</a></div>
+                <div class="navbar-item"><a href="{% url 'trail' %}">산책로</a></div>
+                <div class="navbar-item"><a href="{% url 'community' %}" >커뮤니티</a></div>
+                <div class="navbar-item"><a href="{% url 'blog' %}" id="nav-location">블로그</a></div>
+            </div>    
+            <div class="body-content">
+                <div class="blog-item">
+                    <div class="blog-title">{{ blog.title }}</div>
+                    <div class="blog-author">{{ blog.author }} • {{ blog.pub_date }}</div>
+                    <div class="blog-img">
+                        {% if blog.img.url != None %}
+                        <img class="blog-img" src="{{ blog.img.url}}" width="350px" height="350px">
+                        {% endif %}
+                    </div>
+                    <div class="blog-content">{{ blog.content }}</div>
+                    <div class="blog-hashtag">
+                        {% for hashtag in hashtags.all %}
+                        #{{hashtag}}
+                        {% endfor %}  
+                    </div>
+                    {% if user.is_authenticated and user == blog.author %}
+                    <a class="blog-edit" href="{% url 'blog_edit' blog.id %}">수정하기</a>
+                    <a class="blog-edit" href="{% url 'blog_delete' blog.id %}">삭제하기</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="blog-reply-wrapper">
+            {% for reply in blog.blog_replys.all %}
+            <div class="blog-reply-by">{{ reply.reply_by }}</div>
+            <div class="blog-reply-content">
+                {{ reply.content }}
+                <br>
+                {% if user.is_authenticated and user == reply.reply_by %}
+                <a class="blog-reply-delete" href="{% url 'blog_reply_delete' blog.id reply.id %}">삭제하기</a>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div>아직 작성된 댓글이 없습니다.</div>
+            {% endfor %}
+        </div>
+        <div class="blog-reply-create-wrapper">
+            {% if user.is_authenticated %}
+            <form action="{% url 'blog_reply' blog.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="{{ post.id }}" name="blog">
+                <input class="blog-create-input" type="text" name="content">
+                <button class="blog-create-button" type="submit">댓글 남기기</button>
+            </form>
+            {% endif %}
+        </div>
+        <footer class="footer">
+            <img class="footer-img" src="{% static 'logo.png' %}" width="100px"><br>
+            <div class="footer-content">Designed and built with all the love in the world <br>by the amble team with the help of our contributors.</div>
+            <div class="footer-content">
+                분위기 좋은 곳에서 산책 할래요?<br>
+                내 주변 산책로의 모든 것, amble<br>
+            </div>
+            <br>
+            <div class="footer-rights">ⓒ 2021. amble all rights reserved.</div>    
+        </footer>
+    </body>
+</html>
 
-<p>
-{% for hashtag in hashtags.all %}
-#{{hashtag}}
-{% endfor %}
-</p>
 
-{% if user.is_authenticated and user == blog.author %}
-<a href="{% url 'blog_edit' blog.id %}">수정하기</a>
-<a href="{% url 'blog_delete' blog.id %}">삭제하기</a>
-{% endif %}
 
-{% if user.is_authenticated %}
-<form action="{% url 'blog_reply' blog.id %}" method="POST">
-    {% csrf_token %}
-    <input type="hidden" value="{{ post.id }}" name="blog">
-    <input type="text" name="content">
-    <button class="button" type="submit">댓글 남기기</button>
-</form>
-{% endif %}
 
-{% for reply in blog.blog_replys.all %}
-{% if user.is_authenticated and user == reply.reply_by %}
-<a href="{% url 'blog_reply_delete' blog.id reply.id %}">삭제</a>
-{% endif %}
-<h6>{{ reply.reply_by }}</h6>
-<h6>{{ reply.reply_at }}</h6>
-<p>{{ reply.content }}</p>
-{% empty %}
-<p>아직 작성된 댓글이 없습니다.</p>
-{% endfor %}
+
+
