@@ -1,0 +1,54 @@
+* {
+    font-family: 'Noto Sans', sans-serif;
+    color: black;               
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 25.88px;
+}
+.head-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 36px;
+    padding-right: 50px;
+}
+.login-wrapper {
+    padding-top: 40px;
+}
+.body-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 7fr;
+    font-weight: 800;
+    padding-top: 8px;
+}
+.body-navbar {
+    padding-left: 60px;
+    padding-top: 8px;
+}
+.navbar-item {
+    padding-bottom: 50px;
+}
+a {
+    text-decoration: none;
+}
+#nav-location {
+    color: #249C87;
+}
+.footer {
+    padding-top: 60px;
+}
+.footer-img {
+    padding-left: 45px;
+    font-weight: 400;
+}
+.footer-content {
+    padding-left: 60px;
+    font-weight: 400;
+    font-size: 12px;
+}
+.footer-rights {
+    padding-left: 60px;
+    padding-bottom: 30px;
+    font-weight: 300;
+    color: gray;
+    font-size: 12px;
+}

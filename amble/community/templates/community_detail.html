@@ -1,30 +1,241 @@
-<h3>{{ community.title }}</h3>
-<h5>{{ community.author }}</h5>
-<h5>{{ community.pub_date }}</h5>
-<p>{{ community.content }}</p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>amble</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+        <style>
+            * { 
+                font-family: 'Noto Sans', sans-serif;
+                color: black;               
+                font-size: 17px;
+                font-weight: 600;
+                line-height: 25.88px;
+            }
+            .head-wrapper {
+                display: flex;
+                justify-content: space-between;
+                padding-left: 36px;
+                padding-right: 50px;
+            }
+            .login-wrapper {
+                padding-top: 40px;
+            }
+            .body-wrapper {
+                display: grid;
+                grid-template-columns: 2fr 7fr;
+                font-weight: 800;
+                padding-top: 8px;
+            }
+            .body-navbar {
+                padding-left: 60px;
+                padding-top: 8px;
+            }
+            .navbar-item {
+                padding-bottom: 50px;
+            }
+            a {
+                text-decoration: none;
+            }
+            #nav-location {
+                color: #249C87;
+            }
+            .body-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
+                background-color: #F3F3F3;
+                height: auto;
+                width: 1064px;
+                margin-top: 16px;
+                border-radius: 15px;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+            .comm-reply-create-wrapper {
+                display: flex;
+                padding-left: 80px;
+                padding-bottom: 27px;
+            }
+            .comm-create-button {
+                font-size: 15px;
+                background-color: #2EC7AB;
+                color: white;
+                height: 35px;
+                width: 110px;   
+                border-radius: 12px;
+                border: 1px solid #DAD8D8
+            }
+
+            .comm-create-input {
+                margin-right: 10px;
+                height: 28px;
+            }
+
+            hr {
+                width: 800px;
+            }
+            .comm-item {
+                height: auto;
+                width: 950px;
+                background-color: white;
+                padding-left: 50px;
+                padding-top: 10px;
+                padding-bottom: 40px;
+            }
+            .comm-title {
+                font-family: Noto Sans;
+                font-size: 25px;
+                font-weight: 600;
+                line-height: 34px;
+                padding-top: 50px;
+                padding-bottom: 9px;
+                padding-bottom: 5px;
+            }
+            .comm-author {
+                font-size: 18px;
+                font-weight: 300;
+                color: gray;
+                padding-bottom: 25px;
+            }
+            .comm-content {
+                font-family: Noto Sans;
+                font-size: 20px;
+                font-weight: 300;
+                line-height: 30px;
+                width: 890px;
+                padding-bottom: 10px;
+            }
+            .comm-edit {
+                font-size: 15px;
+                font-weight: 300;
+                color: gray;
+            }
+            .comm-reply-wrapper {
+                padding-left: 80px;
+                padding-top: 30px;
+            }
+            .comm-reply-by {
+                font-size: 18px;
+                font-weight: 600;
+                color: #249C87;
+                padding-bottom: 10px;
+            }
+            .comm-reply-content {
+                width: 890px;  
+                font-size: 16px;
+                font-weight: 300;
+                padding-bottom: 23px;
+            }
+
+            .comm-reply-edit {
+                font-size: 13px;
+                font-weight: 300;
+                padding-bottom: 23px;
+                color: gray;
+            }
+            .footer {
+                padding-top: 60px;
+            }
+            .footer-img {
+                padding-left: 45px;
+                font-weight: 400;
+            }
+            .footer-content {
+                padding-left: 60px;
+                font-weight: 400;
+                font-size: 12px;
+            }
+            .footer-rights {
+                padding-left: 60px;
+                padding-bottom: 30px;
+                font-weight: 300;
+                color: gray;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="head-wrapper">
+            <img src="{% static 'logo.png' %}">
+            <div class="login-wrapper">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}">로그인/회원가입</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">로그아웃</a>
+            {% endif %}
+            </div>
+        </div>
+        <div class="body-wrapper">
+            <div class="body-navbar">
+                <div class="navbar-item"><a href="{% url 'home' %}">홈</a></div>
+                <div class="navbar-item"><a href="{% url 'trail' %}">산책로</a></div>
+                <div class="navbar-item"><a href="{% url 'community' %}" id="nav-location">커뮤니티</a></div>
+                <div class="navbar-item"><a href="{% url 'blog' %}">블로그</a></div>
+            </div>
+            <div>
+                <div class="body-content">
+                    <div class="comm-item">
+                        <div class="comm-title">{{ community.title }}</div>
+                        <div class="comm-author">{{ community.author }} • {{ community.pub_date }}</div>
+                        <div class="comm-content">{{ community.content }}</div>
+                        {% if user.is_authenticated and user == community.author %}
+                        <a class="comm-edit" href="{% url 'edit' community.id %}">수정하기</a>
+                        <a class="comm-edit" href="{% url 'delete' community.id %}">삭제하기</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="comm-reply-wrapper">
+                    
+                    {% for reply in community.community_replys.all %}
+                    
+                    <div class="comm-reply-by">
+                        {{ reply.reply_by }}
+                        
+                    </div>
+                    <div class="comm-reply-content">
+                        {{ reply.content }}
+                        <br>
+                        {% if user.is_authenticated and user == reply.reply_by %}
+                        <a class="comm-reply-edit" href="{% url 'reply_delete' community.id reply.id %}">삭제하기</a>
+                    {% endif %}
+                    </div>
+                    {% empty %}
+                    <div>아직 작성된 댓글이 없습니다.</div>
+                    {% endfor %}
+                </div>
+                <div class="comm-reply-create-wrapper">
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'reply' community.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ post.id }}" name="community">
+                        <input class="comm-create-input" type="text" name="content">
+                        <button class="comm-create-button" type="submit">댓글 남기기</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <img class="footer-img" src="{% static 'logo.png' %}" width="100px"><br>
+            <div class="footer-content">Designed and built with all the love in the world <br>by the amble team with the help of our contributors.</div>
+            <div class="footer-content">
+                분위기 좋은 곳에서 산책 할래요?<br>
+                내 주변 산책로의 모든 것, amble<br>
+            </div>
+            <br>
+            <div class="footer-rights">ⓒ 2021. amble all rights reserved.</div>    
+        </footer>
+    </body>
+</html>
 
 
-{% if user.is_authenticated and user == community.author %}
-<a href="{% url 'edit' community.id %}">수정하기</a>
-<a href="{% url 'delete' community.id %}">삭제하기</a>
-{% endif %}
 
-{% if user.is_authenticated %}
-<form action="{% url 'reply' community.id %}" method="POST">
-    {% csrf_token %}
-    <input type="hidden" value="{{ post.id }}" name="community">
-    <input type="text" name="content">
-    <button class="button" type="submit">댓글 남기기</button>
-</form>
-{% endif %}
 
-{% for reply in community.community_replys.all %}
-{% if user.is_authenticated and user == reply.reply_by %}
-<a href="{% url 'reply_delete' community.id reply.id %}">삭제</a>
-{% endif %}
-<h6>{{ reply.reply_by }}</h6>
-<h6>{{ reply.reply_at }}</h6>
-<p>{{ reply.content }}</p>
-{% empty %}
-<p>아직 작성된 댓글이 없습니다.</p>
-{% endfor %}
+
+
